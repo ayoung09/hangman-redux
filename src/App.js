@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import CurrentProgress from './components/current-progress';
+import IncorrectGuesses from './components/incorrect-guesses';
 import GuessesRemaining from './components/guesses-remaining';
 import SubmitGuessFrom from './components/submit-guess-form';
 import WORDS from './words/words';
@@ -29,7 +30,7 @@ class App extends Component {
       if (this.state.lettersGuessedCorrectly.includes(letter)) {
         output += `${letter }`
       } else {
-        output += '- '
+        output += '_ '
       }
     });
 
@@ -83,7 +84,7 @@ class App extends Component {
         </header>
 
         <CurrentProgress progress={this._displayProgress()} />
-        <p> Incorrect Guesses: { this.state.lettersGuessedIncorrectly } </p>
+        <IncorrectGuesses incorrectGuesses={this.state.lettersGuessedIncorrectly} />
         <GuessesRemaining guessesRemaining={this.state.guessesRemaining} />
         <SubmitGuessFrom onSubmit={this._handleSubmit.bind(this)} />
         
