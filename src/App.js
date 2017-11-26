@@ -24,30 +24,24 @@ class App extends Component {
   }
 
   _displayProgress(){
-    let output = '';
-
-    this.state.puzzle.split('').map((letter) => {
-      if (this.state.lettersGuessedCorrectly.includes(letter)) {
-        output += `${letter }`
-      } else {
-        output += '_ '
-      }
+    const output = this.state.puzzle.split('').map(letter => {
+      return this.state.lettersGuessedCorrectly.includes(letter) ? letter : '_';
     });
+    this.checkForWin();
+    return output.join(' ');
+  }
 
+  checkForWin() {
     let finished = true;
-
-    this.state.puzzle.split('').map( (letter) => {
+    this.state.puzzle.split('').forEach(letter => {
       if (this.state.lettersGuessedCorrectly.includes(letter) === false) {
         finished = false
       }
     });
-
     if (finished === true){
       alert('winner!!')
       return;
     };
-
-    return output;
   }
 
   _handleSubmit(letter){
