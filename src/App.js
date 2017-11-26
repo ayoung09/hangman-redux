@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import CurrentProgress from './components/current-progress';
 import SubmitGuessFrom from './components/submit-guess-form';
 import WORDS from './words/words';
 
@@ -80,7 +81,7 @@ class App extends Component {
           <h1 className="App-title">Hangman!</h1>
         </header>
 
-        <p> Current Progress: { this._displayProgress() } </p>
+        <CurrentProgress progress={this._displayProgress()} />
         <p> Incorrect Guesses: { this.state.lettersGuessedIncorrectly } </p>
         <p> Number of Incorrect Guesses Left: { this.state.guessesRemaining } </p>
         <SubmitGuessFrom onSubmit={this._handleSubmit.bind(this)} />
