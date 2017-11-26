@@ -1,7 +1,7 @@
 import React from 'react';
 
 const CurrentProgress = (props) => (
-  <p> CurrentProgress: {props.progress} </p>
+  <p> Current Progress: {props.progress} </p>
 );
 
 export default CurrentProgress;

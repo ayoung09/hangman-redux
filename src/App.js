@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import CurrentProgress from './components/current-progress';
+import GuessesRemaining from './components/guesses-remaining';
 import SubmitGuessFrom from './components/submit-guess-form';
 import WORDS from './words/words';
 
@@ -83,7 +84,7 @@ class App extends Component {
 
         <CurrentProgress progress={this._displayProgress()} />
         <p> Incorrect Guesses: { this.state.lettersGuessedIncorrectly } </p>
-        <p> Number of Incorrect Guesses Left: { this.state.guessesRemaining } </p>
+        <GuessesRemaining guessesRemaining={this.state.guessesRemaining} />
         <SubmitGuessFrom onSubmit={this._handleSubmit.bind(this)} />
         
         <p><button onClick={this._handleRestart.bind(this)}>Restart game!</button></p>
