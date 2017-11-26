@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import WORDS from './words/words'
+import SubmitGuessFrom from './components/submit-guess-form';
+import WORDS from './words/words';
 
 const initialState = {
-  currentGuessedLetter: '',
   lettersGuessedCorrectly: [],
   lettersGuessedIncorrectly: [],
   guessesRemaining: 6,
@@ -18,30 +18,6 @@ class App extends Component {
       ...initialState,
       puzzle: WORDS[Math.floor(Math.random()*WORDS.length)]
     }
-  }
-
-  _handleChange(event){
-    this.setState({currentGuessedLetter: event.target.value});
-  }
-
-  _handleSubmit(event){
-    if (this.state.lettersGuessedCorrectly.includes(this.state.currentGuessedLetter) || this.state.lettersGuessedIncorrectly.includes(this.state.currentGuessedLetter)) {
-      alert('you already guessed this')
-    } else {
-      if (this.state.puzzle.includes(this.state.currentGuessedLetter)) {
-        this.setState({ lettersGuessedCorrectly: [...this.state.lettersGuessedCorrectly, this.state.currentGuessedLetter] })
-      } else {
-        if (this.state.guessesRemaining > 1){
-          this.setState({ lettersGuessedIncorrectly: [...this.state.lettersGuessedIncorrectly, this.state.currentGuessedLetter], guessesRemaining: this.state.guessesRemaining - 1 })
-        } else {
-          alert('YOU LOSE!');
-          return
-        }
-      }
-    }
-
-    event.preventDefault();
-    this.refs.letterForm.reset()
   }
 
   _displayProgress(){
@@ -71,6 +47,23 @@ class App extends Component {
     return output;
   }
 
+  _handleSubmit(letter){
+    if (this.state.lettersGuessedCorrectly.includes(letter) || this.state.lettersGuessedIncorrectly.includes(letter)) {
+      alert('you already guessed this')
+    } else {
+      if (this.state.puzzle.includes(letter)) {
+        this.setState({ lettersGuessedCorrectly: [...this.state.lettersGuessedCorrectly, letter] })
+      } else {
+        if (this.state.guessesRemaining > 1){
+          this.setState({ lettersGuessedIncorrectly: [...this.state.lettersGuessedIncorrectly, letter], guessesRemaining: this.state.guessesRemaining - 1 })
+        } else {
+          alert('YOU LOSE!');
+          return
+        }
+      }
+    }
+  }
+
   _handleRestart(e) {
     e.preventDefault();
     this.setState({
@@ -90,13 +83,8 @@ class App extends Component {
         <p> Current Progress: { this._displayProgress() } </p>
         <p> Incorrect Guesses: { this.state.lettersGuessedIncorrectly } </p>
         <p> Number of Incorrect Guesses Left: { this.state.guessesRemaining } </p>
-
-        <form onSubmit={this._handleSubmit.bind(this)} ref="letterForm">
-          <label>
-            Enter letter: <input onChange={this._handleChange.bind(this)} type="text" name="currentGuessedLetter" />
-          </label>
-          <input type="submit" />
-        </form>
+        <SubmitGuessFrom onSubmit={this._handleSubmit.bind(this)} />
+        
         <p><button onClick={this._handleRestart.bind(this)}>Restart game!</button></p>
 
       </div>
