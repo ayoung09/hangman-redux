@@ -27,18 +27,12 @@ class App extends Component {
     const output = this.state.puzzle.split('').map(letter => {
       return this.state.lettersGuessedCorrectly.includes(letter) ? letter : '_';
     });
-    this.checkForWin();
+    this.checkForWin(output);
     return output.join(' ');
   }
 
-  checkForWin() {
-    let finished = true;
-    this.state.puzzle.split('').forEach(letter => {
-      if (this.state.lettersGuessedCorrectly.includes(letter) === false) {
-        finished = false
-      }
-    });
-    if (finished === true){
+  checkForWin(output) {
+    if (output.join('') === this.state.puzzle) {
       alert('winner!!')
       return;
     };
