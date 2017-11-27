@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import store from '../store';
 import { addCorrectGuess, addIncorrectGuess } from '../modules/hangman.module';
 
 const mapStateToProps = state => ({

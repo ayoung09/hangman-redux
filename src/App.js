@@ -28,11 +28,14 @@ class App extends Component {
 
   componentWillUpdate(nextProps) {
     this.checkForWin(nextProps.currentProgress.split(' ').join(''));
+    if (nextProps.guessesRemaining === 0) {
+      alert('YOU LOSE!')
+    }
   }
 
   checkForWin(currentProgress) {
     if (currentProgress === this.props.puzzle) {
-      alert('winner!!')
+      alert('WINNER!!')
       return;
     };
   }
