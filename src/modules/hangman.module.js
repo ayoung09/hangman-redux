@@ -44,6 +44,7 @@ const reducer = (prevState = initialState, action) => {
   switch (action.type) {
     case ADD_CORRECT_GUESS:
       newState.lettersGuessedCorrectly = [...newState.lettersGuessedCorrectly, action.letter];
+      //this updateCurrentProgressDisplay is not covered in the provided steps 1-4 of Day 2 curriculum and can be ignored for now
       newState.currentProgress = updateCurrentProgressDisplay(newState.puzzle, newState.lettersGuessedCorrectly);
       return newState;
     case ADD_INCORRECT_GUESS:
@@ -62,6 +63,7 @@ const reducer = (prevState = initialState, action) => {
   }
 }
 
+//unnecessary for steps 1-4 of Day 2 curriculum
 function updateCurrentProgressDisplay(puzzle, lettersGuessedCorrectly = []) {
   return puzzle.split('').map(letter => {
     return lettersGuessedCorrectly.includes(letter) ? letter : '_';

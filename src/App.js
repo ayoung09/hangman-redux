@@ -22,10 +22,12 @@ const mapDispatchToProps = dispatch => ({
 
 class App extends Component {
 
+  //We need to run an initialize function when the component mounts because our initialState initializes currentProgress as ''
   componentDidMount() {
     this.props.initializeCurrentProgress();
   }
 
+  //When the component updates (after the store updates) with new props, we can check if the user has won or lost
   componentWillUpdate(nextProps) {
     this.checkForWin(nextProps.currentProgress.split(' ').join(''));
     if (nextProps.guessesRemaining === 0) {

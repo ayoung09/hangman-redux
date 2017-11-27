@@ -28,6 +28,7 @@ class SubmitGuessForm extends Component {
   _handleSubmitAndClear(event){
     event.preventDefault();
 
+    //deconstructing properties on this so that we don't need to always type "this.props..." or "this.state..."
     const { props: { puzzle, addCorrectGuess, addIncorrectGuess }, state: { currentGuessedLetter }} = this;
     
     if (this.userAlreadyGuessedLetter(currentGuessedLetter)) {
