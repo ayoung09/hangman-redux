@@ -3,7 +3,6 @@ import WORDS from '../words/words';
 //ACTION TYPES
 const ADD_CORRECT_GUESS = "ADD_CORRECT_GUESS";
 const ADD_INCORRECT_GUESS = "ADD_INCORRECT_GUESS";
-const SET_CURRENT_GUESSED_LETTER = "SET_CURRENT_GUESSED_LETTER";
 const INITIALIZE_CURRENT_PROGRESS = "INITIALIZE_CURRENT_PROGRESS";
 const RESET_GAME = "RESET_GAME";
 
@@ -16,11 +15,6 @@ export const addCorrectGuess = letter => ({
 
 export const addIncorrectGuess = letter => ({
   type: ADD_INCORRECT_GUESS,
-  letter,
-});
-
-export const setCurrentGuessedLetter = letter => ({
-  type: SET_CURRENT_GUESSED_LETTER,
   letter,
 });
 
@@ -40,7 +34,6 @@ const initialState = {
   lettersGuessedCorrectly: [],
   lettersGuessedIncorrectly: [],
   guessesRemaining: 6,
-  currentGuessedLetter: '',
 }
 
 
@@ -56,9 +49,6 @@ const reducer = (prevState = initialState, action) => {
     case ADD_INCORRECT_GUESS:
       newState.lettersGuessedIncorrectly = [...newState.lettersGuessedIncorrectly, action.letter];
       newState.guessesRemaining = prevState.guessesRemaining - 1;
-      return newState;
-    case SET_CURRENT_GUESSED_LETTER:
-      newState.currentGuessedLetter = action.letter;
       return newState;
     case INITIALIZE_CURRENT_PROGRESS:
       newState.currentProgress = updateCurrentProgressDisplay(newState.puzzle);

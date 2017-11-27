@@ -11,10 +11,8 @@ import { resetGame, initializeCurrentProgress } from './modules/hangman.module';
 const mapStateToProps = state => ({
   puzzle: state.puzzle,
   currentProgress: state.currentProgress,
-  lettersGuessedCorrectly: state.lettersGuessedCorrectly,
   lettersGuessedIncorrectly: state.lettersGuessedIncorrectly,
   guessesRemaining: state.guessesRemaining,
-  shouldUpdateDisplay: state.shouldUpdateDisplay,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -40,7 +38,7 @@ class App extends Component {
   }
 
   render() {
-    //const { currentProgress, lettersGuessedIncorrectly, guessesRemaining, resetGame } = this.props;
+    const { currentProgress, lettersGuessedIncorrectly, guessesRemaining, resetGame } = this.props;
 
     return (
       <div className="App">
@@ -49,9 +47,9 @@ class App extends Component {
           <h1 className="App-title">Hangman!</h1>
         </header>
 
-        <CurrentProgress progress={this.props.currentProgress} />
-        <IncorrectGuesses incorrectGuesses={this.props.lettersGuessedIncorrectly} />
-        <GuessesRemaining guessesRemaining={this.props.guessesRemaining} />
+        <CurrentProgress progress={currentProgress} />
+        <IncorrectGuesses incorrectGuesses={lettersGuessedIncorrectly} />
+        <GuessesRemaining guessesRemaining={guessesRemaining} />
         <SubmitGuessFrom />
         
         <p><button onClick={() => resetGame()}>Restart game!</button></p>

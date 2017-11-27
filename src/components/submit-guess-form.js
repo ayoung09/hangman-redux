@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import store from '../store';
-import { setCurrentGuessedLetter, addCorrectGuess, addIncorrectGuess } from '../modules/hangman.module';
+import { addCorrectGuess, addIncorrectGuess } from '../modules/hangman.module';
 
 const mapStateToProps = state => ({
   puzzle: state.puzzle,
@@ -10,7 +10,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentGuessLetter: letter => dispatch(setCurrentGuessedLetter(letter)),
   addCorrectGuess: letter => dispatch(addCorrectGuess(letter)),
   addIncorrectGuess: letter => dispatch(addIncorrectGuess(letter)),
 });
@@ -21,8 +20,6 @@ class SubmitGuessForm extends Component {
       this.state = {
           currentGuessedLetter: '',
       };
-      console.log('props: ', this.props);
-      console.log('state: ', store.getState())
   }
 
   _handleChange(event){
