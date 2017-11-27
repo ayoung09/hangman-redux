@@ -4,7 +4,7 @@ import WORDS from '../words/words';
 const ADD_CORRECT_GUESS = "ADD_CORRECT_GUESS";
 const ADD_INCORRECT_GUESS = "ADD_INCORRECT_GUESS";
 const SET_CURRENT_GUESSED_LETTER = "SET_CURRENT_GUESSED_LETTER";
-const SET_CURRENT_PROGRESS = "SET_CURRENT_PROGRESS";
+const INITIALIZE_CURRENT_PROGRESS = "INITIALIZE_CURRENT_PROGRESS";
 const RESET_GAME = "RESET_GAME";
 
 
@@ -24,9 +24,8 @@ export const setCurrentGuessedLetter = letter => ({
   letter,
 });
 
-export const setCurrentProgress = progressToDisplay => ({
-  type: SET_CURRENT_PROGRESS,
-  progressToDisplay,
+export const initializeCurrentProgress = () => ({
+  type: INITIALIZE_CURRENT_PROGRESS,
 });
 
 export const resetGame = () => ({
@@ -39,7 +38,7 @@ const initialState = {
   puzzle: WORDS[Math.floor(Math.random()*WORDS.length)],
   currentProgress: '',
   lettersGuessedCorrectly: [],
-  lettersGuesedIncorrectly: [],
+  lettersGuessedIncorrectly: [],
   guessesRemaining: 6,
   currentGuessedLetter: '',
 }
@@ -51,25 +50,32 @@ const reducer = (prevState = initialState, action) => {
 
   switch (action.type) {
     case ADD_CORRECT_GUESS:
-      newState.lettersGuesedCorrectly = [...prevState.lettersGuessedCorrectly, action.letter];
-      newState.guessesRemaining = prevState.guessesRemaining - 1;
+      newState.lettersGuessedCorrectly = [...newState.lettersGuessedCorrectly, action.letter];
+      newState.currentProgress = updateCurrentProgressDisplay(newState.puzzle, newState.lettersGuessedCorrectly);
       return newState;
     case ADD_INCORRECT_GUESS:
-      newState.lettersGuesedIncorrectly = [...prevState.lettersGuesedIncorrectly, action.letter];
+      newState.lettersGuessedIncorrectly = [...newState.lettersGuessedIncorrectly, action.letter];
       newState.guessesRemaining = prevState.guessesRemaining - 1;
       return newState;
     case SET_CURRENT_GUESSED_LETTER:
       newState.currentGuessedLetter = action.letter;
       return newState;
-    case SET_CURRENT_PROGRESS:
-      newState.currentProgress = action.progressToDisplay;
+    case INITIALIZE_CURRENT_PROGRESS:
+      newState.currentProgress = updateCurrentProgressDisplay(newState.puzzle);
       return newState;
     case RESET_GAME:
       newState = {...initialState, puzzle: WORDS[Math.floor(Math.random()*WORDS.length)]};
+      newState.currentProgress = updateCurrentProgressDisplay(newState.puzzle);
       return newState;
     default:
       return prevState;
   }
+}
+
+function updateCurrentProgressDisplay(puzzle, lettersGuessedCorrectly = []) {
+  return puzzle.split('').map(letter => {
+    return lettersGuessedCorrectly.includes(letter) ? letter : '_';
+  }).join(' ');
 }
 
 export default reducer;

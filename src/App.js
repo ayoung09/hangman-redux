@@ -6,7 +6,7 @@ import CurrentProgress from './components/current-progress';
 import IncorrectGuesses from './components/incorrect-guesses';
 import GuessesRemaining from './components/guesses-remaining';
 import SubmitGuessFrom from './components/submit-guess-form';
-import { resetGame } from './modules/hangman.module';
+import { resetGame, initializeCurrentProgress } from './modules/hangman.module';
 
 const mapStateToProps = state => ({
   puzzle: state.puzzle,
@@ -14,56 +14,33 @@ const mapStateToProps = state => ({
   lettersGuessedCorrectly: state.lettersGuessedCorrectly,
   lettersGuessedIncorrectly: state.lettersGuessedIncorrectly,
   guessesRemaining: state.guessesRemaining,
+  shouldUpdateDisplay: state.shouldUpdateDisplay,
 });
 
 const mapDispatchToProps = dispatch => ({
+  initializeCurrentProgress: () => dispatch(initializeCurrentProgress()),
   resetGame: () => dispatch(resetGame()),
 })
 
 class App extends Component {
 
-  _displayProgress(){
-    const output = this.state.puzzle.split('').map(letter => {
-      return this.state.lettersGuessedCorrectly.includes(letter) ? letter : '_';
-    });
-    this.checkForWin(output);
-    return output.join(' ');
+  componentDidMount() {
+    this.props.initializeCurrentProgress();
   }
 
-  checkForWin(output) {
-    if (output.join('') === this.state.puzzle) {
+  componentWillUpdate(nextProps) {
+    this.checkForWin(nextProps.currentProgress.split(' ').join(''));
+  }
+
+  checkForWin(currentProgress) {
+    if (currentProgress === this.props.puzzle) {
       alert('winner!!')
       return;
     };
   }
 
-  _handleSubmit(letter){
-    // if (this.state.lettersGuessedCorrectly.includes(letter) || this.state.lettersGuessedIncorrectly.includes(letter)) {
-    //   alert('you already guessed this')
-    // } else {
-    //   if (this.state.puzzle.includes(letter)) {
-    //     this.setState({ lettersGuessedCorrectly: [...this.state.lettersGuessedCorrectly, letter] })
-    //   } else {
-    //     if (this.state.guessesRemaining > 1){
-    //       this.setState({ lettersGuessedIncorrectly: [...this.state.lettersGuessedIncorrectly, letter], guessesRemaining: this.state.guessesRemaining - 1 })
-    //     } else {
-    //       alert('YOU LOSE!');
-    //       return
-    //     }
-    //   }
-    // }
-  }
-
-  _handleRestart(e) {
-    // e.preventDefault();
-    // this.setState({
-    //   ...initialState,
-    //   puzzle: WORDS[Math.floor(Math.random()*WORDS.length)],
-    // });
-  }
-
   render() {
-    const { currentProgress, lettersGuessedCorrectly, lettersGuessedIncorrectly, guessesRemaining, resetGame } = this.props;
+    //const { currentProgress, lettersGuessedIncorrectly, guessesRemaining, resetGame } = this.props;
 
     return (
       <div className="App">
@@ -72,10 +49,10 @@ class App extends Component {
           <h1 className="App-title">Hangman!</h1>
         </header>
 
-        <CurrentProgress progress={this.props.puzzle} />
-        <IncorrectGuesses incorrectGuesses={lettersGuessedIncorrectly} />
-        <GuessesRemaining guessesRemaining={guessesRemaining} />
-        <SubmitGuessFrom onSubmit={this._handleSubmit.bind(this)} />
+        <CurrentProgress progress={this.props.currentProgress} />
+        <IncorrectGuesses incorrectGuesses={this.props.lettersGuessedIncorrectly} />
+        <GuessesRemaining guessesRemaining={this.props.guessesRemaining} />
+        <SubmitGuessFrom />
         
         <p><button onClick={() => resetGame()}>Restart game!</button></p>
 
